@@ -1,6 +1,6 @@
-let gamerAtac
-let enemyPower
-
+let gamerAtac 
+let enemyPower 
+    
 function startGame(){
     let petPress = document.getElementById('pet-press')
 petPress.addEventListener('click', gamerOption)
@@ -11,36 +11,12 @@ let firePower = document.getElementById('fire-push')
 firePower.addEventListener('click', fireAtac)
 let earthPower = document.getElementById('earth-push')
 earthPower.addEventListener('click', earthAtac)
-let airPower = document.getElementById('air-storm')
+/* let airPower = document.getElementById('air-storm')
 airPower.addEventListener('click', airAtac)
 let eterPower = document.getElementById('eter-soft')
 eterPower.addEventListener('click', eterAtac)
 let gasPower = document.getElementById('gas-release')
-gasPower.addEventListener('click', gasAtac)
-}
-
-function startEnemyAtac() {
-    let randomAtac = randomOption(1 ,6)
-
-    if (randomAtac ==1) {
-        enemyPower = 'Water'
-        alert ("Your enemy attacked you with " + enemyPower)
-    } else if(randomAtac == 2) {
-        enemyPower = 'Fire'
-        alert ("Your enemy attacked you with " + enemyPower) 
-    } else if(randomAtac == 3) {
-        enemyPower = 'Earth'
-        alert ("Your enemy attacked you with " + enemyPower)
-    } else if(randomAtac == 4) {
-        enemyPower = 'Air'
-        alert ("Your enemy attacked you with " + enemyPower)
-    } else if(randomAtac == 5) {
-        enemyPower = 'Eter'
-        alert ("Your enemy attacked you with " + enemyPower)
-    } else {
-        enemyPower = 'Gas'
-        alert ("Your enemy attacked you with " + enemyPower)
-    }
+gasPower.addEventListener('click', gasAtac) */
 }
 
 function gamerOption() {
@@ -91,24 +67,21 @@ function enemyPet(){
 
 function waterAtac() {
     gamerAtac = 'Water'
-    alert("You attacked with " + gamerAtac)
     startEnemyAtac()
 }
 
 function fireAtac(){
     gamerAtac = 'Fire'
-    alert("You attacked with " + gamerAtac)
     startEnemyAtac()
 
 }
 
 function earthAtac(){
     gamerAtac = 'Earth'
-    alert("You attacked with " + gamerAtac)
     startEnemyAtac()
 }
 
-function airAtac(){
+/* function airAtac(){
     gamerAtac = 'Air'
     alert("You attacked with " + gamerAtac)
     startEnemyAtac()
@@ -124,8 +97,58 @@ function gasAtac(){
     gamerAtac = 'Gas'
     alert("You attacked with " + gamerAtac)
     startEnemyAtac()
+} */
+
+function startEnemyAtac() {
+    let randomAtac = randomOption(1 ,3)
+
+    if (randomAtac ==1) {
+        enemyPower = 'Water'
+    } else if(randomAtac == 2) {
+        enemyPower = 'Fire'
+    } /* else if(randomAtac == 3) {
+        enemyPower = 'Gas'
+        alert ("Your enemy attacked you with " + enemyPower)
+    } else if(randomAtac == 4) {
+        enemyPower = 'Air'
+        alert ("Your enemy attacked you with " + enemyPower)
+    } else if(randomAtac == 5) {
+        enemyPower = 'Eter'
+        alert ("Your enemy attacked you with " + enemyPower)
+    } */ else {
+        enemyPower = 'Earth'
+    }
+    
+    fight()}
+
+
+   //START FIGHT!
+function fight() {
+    if(gamerAtac == enemyPower){
+        announceWinner("match ")
+    } else if (gamerAtac == 'Water' && enemyPower == 'Fire' ) {
+        announceWinner("beat ")
+        // countWin = countWin + 1
+    } else if (gamerAtac == 'Earth' && enemyPower == 'Water' ) {
+        announceWinner("beat ")
+        // countWin = countWin + 1
+    }else if (gamerAtac == 'Fire' && enemyPower == 'Earth' ) {
+        announceWinner("beat ")
+        //countWin = countWin + 1
+    } else {
+        announceWinner("lost ")
+        //countLost = countLost + 1
+    }
 }
 
+function announceWinner(resultFight) {
+    let singResult = document.getElementById('message')
+
+    let showCase = document.createElement('p')
+    showCase.innerHTML = 'Your ' + gamerAtac + resultFight + enemyPower
+
+    singResult.appendChild(showCase)
+}
 function randomOption(min, max) {
     return Math.floor(Math.random() * (max-min+1)+min)
 }

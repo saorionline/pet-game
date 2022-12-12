@@ -61,7 +61,15 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.lives-there {
+    display: flex;
+    justify-content: center;
+}
 
+.frame {
+    margin: 20px;
+    font-size: 40px;
+}
 
 input {
     display: none;

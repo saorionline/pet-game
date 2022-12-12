@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@200&display=swap');
+.description-there {
+    font-size: 33px;
+    color: #3F0071; 
+    display: grid;
+    align-content: space-between;
+    align-items: end;
+    justify-items: center;
+}
+
+body {
+    font-family: 'Fredoka One', cursive;
+    font-family: 'Poppins', sans-serif;
+    background-color: #F3CCFF;
+    font-family: 'Fredoka One', cursive;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+#select-pet {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.title {
+    font-size: 52px;
+    color: #001253;
+    margin: 0px;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: #332FD0;
+    background-color: #FBFACD;
+    font-family: 'Poppins', sans-serif;
+    width: 200px;
+    border-radius: 6px;
+    padding: 14px;
+}
+
+.card-container {
+    display:flex;
+    gap: 20px;
+}
+
+.pet-card {
+    height: 100px;
+    width: 209px;
+    background: white;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3F0071;
+}
+
+.pet-card img {
+    width: 80px;
+}
+
+.select-pet {
+    border-radius: 10px;
+    width: 180px;
+    height: 40px;
+    border: none;
+    margin: 20px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.select-pet:hover {
+    background-color: white;
+    opacity: 50px;
+}
+
+input {
+    display: none;
+}
+

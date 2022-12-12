@@ -1,0 +1,51 @@
+
+
+#select-ataq {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Fredoka One', cursive;
+}
+.title-a {
+    font-size: 16px;
+    color: #3F0071;
+}
+
+.subtitle-b {
+    font-size: 16px;
+    color: #332FD0;
+    background-color: #FBFACD;
+    font-family: 'Poppins', sans-serif;
+    width: 200px;
+    border-radius: 6px;
+    padding: 14px;
+}
+
+.power {
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    width: 240px;
+    border-color: transparent;
+    font-family: 'Poppins', sans-serif;
+    font-size: 40px;
+
+}
+
+.power:hover {
+    background-color: white;
+    opacity: 50px;
+}
+
+.pet-card img {
+    width: 80px;
+}
+
+.button-container {
+    display: flex;
+    gap: 20px;
+}
+
+input {
+    display: none;
+}

@@ -33,7 +33,7 @@ function gamerOption() {
     hidePet.style.display = 'none'
 
     let grabHiddenSection = document.getElementById('select-ataq')
-    grabHiddenSection.style.display = 'block'
+    grabHiddenSection.style.display = 'flex'
 
     let inputHipogoge = document.getElementById('hipogoge')
     let inputCapi = document.getElementById('capi')

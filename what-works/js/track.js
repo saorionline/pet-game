@@ -171,7 +171,7 @@ function fight() {
 
 function lifeDoc() {
     let showReload = document.getElementById('reload')
-    showReload.style.display = 'block'
+    showReload.style.display = 'flex'
 
     if(robotLife == 0) {
         endGame("Crack")

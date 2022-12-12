@@ -45,6 +45,23 @@
     display: flex;
     gap: 20px;
 }
+#reload {
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+#game-push {
+    border-radius: 10px;
+    width: 180px;
+    height: 40px;
+    border: none;
+    margin: 20px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+
 
 input {
     display: none;

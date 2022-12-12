@@ -80,3 +80,7 @@ input {
     display: none;
 }
 
+input:checked + label {
+    background-color: #BA94D1;
+}
+

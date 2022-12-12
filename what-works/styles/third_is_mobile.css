@@ -1,0 +1,8 @@
+@media( max-width: 360px) {
+    .card-container {
+        flex-direction: column;
+    }
+    .frame, .title  {
+        font-size: 28px;
+    }
+}

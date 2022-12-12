@@ -45,6 +45,11 @@
     display: flex;
     gap: 20px;
 }
+
+.power:hover{
+    background-color: #BA94D1;
+}
+
 #reload {
     flex-direction: column;
     flex-wrap: wrap;

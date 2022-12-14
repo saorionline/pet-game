@@ -15,53 +15,74 @@ body {
     font-family: 'Fredoka One', cursive;
 }
 
-
-#select-pet {
+.title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 52px;
+    color: #001253;
+    margin: 0px;
+}
+.frame-container {
+    display:flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: space-evenly;
+    margin-top: 60px;
+    margin-bottom: 30px;
+}
+#choose-pet {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.title {
-    font-size: 52px;
-    color: #001253;
-    margin: 0px;
-}
-
-.subtitle {
+.board-style {
     font-size: 16px;
-    color: #332FD0;
-    background-color: #FBFACD;
+    color: #F3CCFF;
+    background-color: #001253;
     font-family: 'Poppins', sans-serif;
     width: 200px;
     border-radius: 6px;
     padding: 14px;
 }
 
+
 .card-container {
     display:flex;
-    gap: 20px;
+    gap: 50px;
+}
+/* Look at superPets.forEach((superPet) => {  */
+input:checked + label {
+    background-color: #BA94D1;
+}
+
+input {
+    display: none;
 }
 
 .pet-card {
-    height: 100px;
-    width: 209px;
-    background: white;
-    padding: 10px;
-    box-sizing: border-box;
-    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #3F0071;
+    width: 115px;
+    height: 110px;
+    background: white;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 20px;
 }
-
 .pet-card img {
-    width: 80px;
+    width: 100px;
+}
+.pet-card img:hover {
+    width: 150px;
 }
 
-.select-pet {
+.button-pet {
     border-radius: 10px;
     width: 180px;
     height: 40px;
@@ -69,18 +90,10 @@ body {
     margin: 20px;
     font-size: 20px;
     font-family: 'Poppins', sans-serif;
+    margin: 74px;
 }
 
-.select-pet:hover {
-    background-color: white;
-    opacity: 50px;
-}
-
-input {
-    display: none;
-}
-
-input:checked + label {
+.button-pet:hover {
     background-color: #BA94D1;
 }
 

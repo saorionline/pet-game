@@ -1,3 +1,4 @@
+//Reload
 
 //LifeDoc
 const showReload = document.getElementById('reload')
@@ -12,10 +13,8 @@ const grabHiddenSection = document.getElementById('select-ataq')
 // Select Power
 const hideReload = document.getElementById('reload')
 const petPress = document.getElementById('pet-press')
-const waterPower = document.getElementById('water-push')
-const firePower = document.getElementById('fire-push')
-const earthPower = document.getElementById('earth-push')
-const reloadButton = document.getElementById('game-push')
+const reloadButton = document.getElementById('game-push')   
+
 
 // Name Pet 
 const setGamerPet = document.getElementById('gamer-pet')
@@ -23,12 +22,20 @@ const setEnemyPet = document.getElementById('opponent-pet')
 
 // Start Game and Select Pet first part main variable
 const cardsBox = document.getElementById('card-box-code')
-
+const boxPowerButtons = document.getElementById('push-box')
 //Other Variables
 
+let extractAtacks
+let petPlayer
 let superPets=[]
 let gamerAtac 
-let enemyPower 
+let enemyPower = []
+
+let gamerOneByOne = []
+let buttonDefend = []
+let waterPower 
+let firePower 
+let earthPower 
 
 let infoAccordion
 let inputHipogoge 
@@ -43,7 +50,7 @@ class superPet {
         this.name = name
         this.photo = photo
         this.life = life
-        this.power = []
+        this.powers = []
     }
 }
 
@@ -51,46 +58,46 @@ let hipogoge = new superPet('Hipogoge', './assets/hipogoge.png', 3)
 let capi = new superPet('Capi', './assets/capi.png', 3)
 let ratigueya = new superPet('Ratigueya', './assets/ratigueya.png', 3)
 
-hipogoge.power.push(
+hipogoge.powers.push(
     {
-        name: 'Water', 
+        name: '💧' , 
         id: 'water-push'
     },
     {
-        name: 'Fire', 
+        name: '🔥', 
         id: 'fire-push'
     },
     {
-        name: 'Earth', 
+        name: '🌱', 
         id: 'earth-push'
     }
 )
-capi.power.push(
+capi.powers.push(
     {
-        name: 'Water', 
+        name: '💧', 
         id: 'water-push'
     },
     {
-        name: 'Fire', 
+        name: '🔥', 
         id: 'fire-push'
     },
     {
-        name: 'Earth', 
+        name: '🌱', 
         id: 'earth-push'
     }
 )
 
-ratigueya.power.push(
+ratigueya.powers.push(
     {
-        name: 'Water', 
+        name: '💧', 
         id: 'water-push'
     },
     {
-        name: 'Fire', 
+        name: '🔥', 
         id: 'fire-push'
     },
     {
-        name: 'Earth', 
+        name: '🌱', 
         id: 'earth-push'
     }
 )
@@ -115,9 +122,6 @@ function startGame(){
     })
 
     petPress.addEventListener('click', gamerOption)
-    waterPower.addEventListener('click', waterAtac)
-    firePower.addEventListener('click', fireAtac)
-    earthPower.addEventListener('click', earthAtac)
     reloadButton.addEventListener('click', reloadAgain)     
 }
 
@@ -126,59 +130,86 @@ function gamerOption() {
     grabHiddenSection.style.display = 'flex'
 
    if(inputHipogoge.checked) {
-    setGamerPet.innerHTML = 'Hipogoge'
+    setGamerPet.innerHTML = inputHipogoge.id
+    petPlayer = inputHipogoge.id
    } else if (inputCapi.checked) {
-    setGamerPet.innerHTML = 'Capi'
+    setGamerPet.innerHTML = inputCapi.id
+    petPlayer = inputCapi.id
    } else if (inputRatigueya.checked) {
-    setGamerPet.innerHTML = 'Ratigueya'
+    setGamerPet.innerHTML = inputRatigueya.id
+    petPlayer = inputRatigueya.id
    } else {
     alert ('Please select a Pet')
    }  
+   bringAtacks(petPlayer)
    enemyPet()
+}
+function bringAtacks(petPlayer){
+    let powers
+    for (let index = 0; index < superPets.length; index++){
+        if(petPlayer === superPets[index].name) {
+            powers = superPets[index].powers
+        }
+    }
+    powersCase(powers)
+}
+function powersCase(powers) {
+    powers.forEach((power) => {
+        extractAtacks = `
+        <button id=${power.id} class="power defend">${power.name}</button>
+        `
+        boxPowerButtons.innerHTML += extractAtacks
+    })
+
+    buttonDefend = document.querySelectorAll('defend')
+    waterPower = document.getElementById('water-push')
+    firePower = document.getElementById('fire-push')
+    earthPower = document.getElementById('earth-push')
+
+
+}
+
+function oneByOne() {
+    buttonDefend.forEach((defendButton) => {
+        defendButton.addEventListener('click', (e) => {
+            if(e.target.textContent === '🔥') {
+                gamerOneByOne.push('Fire')
+                console.log(gamerOneByOne)
+                defendButton.style.background ='#112f58'
+            } else if (e.target.textContent === '💧') {
+                gamerOneByOne.push('Water')
+                console.log(gamerOneByOne)
+                defendButton.style.background ='#112f58'
+            } else {
+                gamerOneByOne.push('Earth')
+                console.log(gamerOneByOne)
+                defendButton.style.background ='#112f58'
+            }
+            startEnemyAtac()
+        })
+    })
 }
 
 function enemyPet() {
-    let randomPet = randomOption(1 ,3)
-
-    if (randomPet ==1) {
-        setEnemyPet.innerHTML = 'Hipogoge'
-    } else if(randomPet == 2) {
-        setEnemyPet.innerHTML = 'Capi'
-    } else {
-        setEnemyPet.innerHTML = 'Ratigueya'
-    } 
+    let randomPet = randomOption(0 , superPets.length - 1)
+    setEnemyPet.innerHTML = superPets[randomPet].name
+    enemyPower = superPets[randomPet].powers
+    oneByOne()
 }
 
-function waterAtac() {
-    gamerAtac = 'Water'
-    startEnemyAtac()
-}
-
-function fireAtac() {
-    gamerAtac = 'Fire'
-    startEnemyAtac()
-
-}
-
-function reloadAgain() {
-    location.reload()
-}
-
-function earthAtac(){
-    gamerAtac = 'Earth'
-    startEnemyAtac()
-}
 
 function startEnemyAtac() {
-    let randomAtac = randomOption(1 ,3)
-    if (randomAtac ==1) {
-        enemyPower = 'Water'
-    } else if(randomAtac == 2) {
-        enemyPower = 'Fire'
+    let randomAtac = randomOption(0 , enemyPower.lenght -1)
+    if (randomAtac == 0 || randomAtac == 1) {
+        enemyPower.push('Water')
+    } else if(randomAtac == 3 || randomAtac == 4) {
+        enemyPower.push('Fire')
     } else {
-        enemyPower = 'Earth'
+        enemyPower.push('Earth')
     }  
+    console.log(enemyPower)
     fight()}
+
    //START FIGHT!
 function fight() {
     if(gamerAtac == enemyPower){
@@ -214,6 +245,19 @@ function lifeDoc() {
     } 
 }    
 
+function endGame(deadMark) {
+
+    let showEnd = document.createElement('p')
+    showEnd.innerHTML = deadMark
+
+    singResult.appendChild(showEnd)
+    waterPower.disabled = true
+    firePower.disabled = true 
+    earthPower.disabled = true 
+}
+function reloadAgain() {
+    location.reload()
+}
 function announceWinner(resultFight) {
 
     let showCase = document.createElement('p')
@@ -221,18 +265,6 @@ function announceWinner(resultFight) {
 
     singResult.appendChild(showCase)
 }
-
-function endGame(deadMark) {
-
-    let showEnd = document.createElement('p')
-    showEnd.innerHTML = deadMark
-
-    singEnd.appendChild(showEnd)
-    waterPower.disabled = true
-    firePower.disabled = true 
-    earthPower.disabled = true 
-}
-
 function randomOption(min, max) {
     return Math.floor(Math.random() * (max-min+1)+min)
 }

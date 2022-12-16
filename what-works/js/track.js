@@ -1,47 +1,56 @@
-//Reload
-
-//LifeDoc
-const showReload = document.getElementById('reload')
-//Announcer
-const singResult = document.getElementById('board')
-//Fight
-const spanLifeCounter = document.getElementById('gamer-life')
-const spanRobotLife = document.getElementById('robot-life')
-// Select Pet
-const hidePet = document.getElementById('choose-pet')
+// sectionSeleccionarAtaque ---- seleccionar-ataque
 const grabHiddenSection = document.getElementById('select-ataq')
-// Select Power
-const hideReload = document.getElementById('reload')
+// -- sectionReiniciar --- reiniciar ///// startGame  showReload         endGame hideReload lifeDoc
+const sectionReload = document.getElementById('reload')
+// startGame ---- botonMascotaJugador -- boton-mascota
 const petPress = document.getElementById('pet-press')
-const reloadButton = document.getElementById('game-push')   
+// botonReiniciar     boton-reiniciar
+const reloadButton = document.getElementById('game-push')
 
-
-// Name Pet 
+//startGame  showReload         endGame hideReload
+sectionReload.style.display = 'none'
+// seleccionarMascotaJugador -- gamerOption seleccionar-mascota Select Pet
+const hidePet = document.getElementById('choose-pet')
+// gamerOption ---- Name Pet ///// spanMascotaJugador 
 const setGamerPet = document.getElementById('gamer-pet')
+// spanMascotaEnemigo    mascota-enemigo
 const setEnemyPet = document.getElementById('opponent-pet')
 
-// Start Game and Select Pet first part main variable
+// sectionMensajes --- endGame -- announceWinner
+const singResult = document.getElementById('board')
+// fight --- spanVidasJugador --- vidas-jugador
+const spanLifeCounter = document.getElementById('gamer-life')
+// fight -- spanVidasEnemigo -- vidas-enemigo
+const spanRobotLife = document.getElementById('robot-life')
+
+// contenedorTarjetas --- Start Game and Select Pet first part main variable
 const cardsBox = document.getElementById('card-box-code')
+// contenedorAtaques
 const boxPowerButtons = document.getElementById('push-box')
 //Other Variables
-
-let extractAtacks
-let petPlayer
+//mokepones
 let superPets=[]
-let gamerAtac 
+// ataqueJugador 
+let gamerAtac =[]
+//ataqueEnemigo
 let enemyPower = []
-
-let gamerOneByOne = []
-let buttonDefend = []
-let waterPower 
-let firePower 
-let earthPower 
-
+// opcionDeMokepones
 let infoAccordion
+
 let inputHipogoge 
 let inputCapi 
 let inputRatigueya 
-
+// mascotaJugador
+let petPlayer
+// ataquesMokepon
+let extractAtacks
+// ataquesMokeponEnemigo
+//let enemyPetPower 
+let waterPower 
+let firePower 
+let earthPower 
+// botones
+let buttonDefend = []
 let lifeCounter = 3
 let robotLife = 3
 
@@ -144,6 +153,7 @@ function gamerOption() {
    bringAtacks(petPlayer)
    enemyPet()
 }
+// extraerAtaques
 function bringAtacks(petPlayer){
     let powers
     for (let index = 0; index < superPets.length; index++){
@@ -153,6 +163,7 @@ function bringAtacks(petPlayer){
     }
     powersCase(powers)
 }
+// mostrarAtaques
 function powersCase(powers) {
     powers.forEach((power) => {
         extractAtacks = `
@@ -161,28 +172,28 @@ function powersCase(powers) {
         boxPowerButtons.innerHTML += extractAtacks
     })
 
-    buttonDefend = document.querySelectorAll('defend')
+    buttonDefend = document.querySelectorAll('.defend')
     waterPower = document.getElementById('water-push')
     firePower = document.getElementById('fire-push')
     earthPower = document.getElementById('earth-push')
 
 
 }
-
+//secuenciaAtaque
 function oneByOne() {
     buttonDefend.forEach((defendButton) => {
         defendButton.addEventListener('click', (e) => {
             if(e.target.textContent === '🔥') {
-                gamerOneByOne.push('Fire')
-                console.log(gamerOneByOne)
+                gamerAtac.push('Fire')
+                console.log(gamerAtac)
                 defendButton.style.background ='#112f58'
             } else if (e.target.textContent === '💧') {
-                gamerOneByOne.push('Water')
-                console.log(gamerOneByOne)
+                gamerAtac.push('Water')
+                console.log(gamerAtac)
                 defendButton.style.background ='#112f58'
             } else {
-                gamerOneByOne.push('Earth')
-                console.log(gamerOneByOne)
+                gamerAtac.push('Earth')
+                console.log(gamerAtac)
                 defendButton.style.background ='#112f58'
             }
             startEnemyAtac()
@@ -234,9 +245,9 @@ function fight() {
         //countLost = countLost + 1
     }
     lifeDoc()}
-
+// revisarVidas
 function lifeDoc() {
-    showReload.style.display = 'flex'
+    sectionReload.style.display = 'flex'
 
     if(robotLife == 0) {
         endGame("Crack")
@@ -244,26 +255,33 @@ function lifeDoc() {
         endGame("Game Over")
     } 
 }    
-
+// crearMensajeFinal(resultadoFinal)
 function endGame(deadMark) {
 
-    let showEnd = document.createElement('p')
-    showEnd.innerHTML = deadMark
+    singResult.innerHTML = deadMark
 
     singResult.appendChild(showEnd)
     waterPower.disabled = true
     firePower.disabled = true 
     earthPower.disabled = true 
+
+    sectionReload.style.display = "block"
+
 }
 function reloadAgain() {
     location.reload()
 }
+// crearMensajeResultado
 function announceWinner(resultFight) {
 
-    let showCase = document.createElement('p')
-    showCase.innerHTML = 'Your ' + gamerAtac + resultFight + enemyPower
+    let showFight = document.createElement('p')
+    showFight.innerHTML = enemyPower + gamerAtac
+    
+// sectionMensajes     resultado
+    singResult.innerHTML = board
+    singResult.appendChild(showFight)
+    
 
-    singResult.appendChild(showCase)
 }
 function randomOption(min, max) {
     return Math.floor(Math.random() * (max-min+1)+min)

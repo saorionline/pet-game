@@ -6,13 +6,8 @@ let gamerAtac
 let lifeCounter = 3
 //vidasEnemigo
 let robotLife = 3
-//Announcer
-const singResult = document.getElementById('board')
 
-// Select Power
-const hideReload = document.getElementById('reload')  
 // Name Pet 
-const setGamerPet = document.getElementById('gamer-pet')
 
 
 //iniciarJuego
@@ -44,11 +39,12 @@ function gamerOption() {
     const grabHiddenSection = document.getElementById('select-ataq')
     grabHiddenSection.style.display = 'flex'
 
-    let inputHipogoge = document.getElementById('Hipogoge')
-    
+    let inputHipogoge = document.getElementById('pet-postal-1')
+    const setGamerPet = document.getElementById('gamer-pet')
+
    if(inputHipogoge.checked) {
-    //spanMascotaJugador
-    setGamerPet.innerHTML = inputHipogoge.id
+    //spanMascotaJugador 
+    setGamerPet.innerHTML = 'Hipogoge'
    } else {
     alert ('Please select a Pet')
    }  
@@ -69,7 +65,7 @@ function enemyPet() {
         //spanMascotaEnemigo
         setEnemyPet.innerHTML = 'Hipogoge'
     } else {
-        alert('You won by default!')
+        announceWinner('You won by default!')
     }
 }
 //ataqueAgua ataqueJugador
@@ -84,7 +80,7 @@ function startEnemyAtac() {
     if (randomAtac == 1) {
         enemyPower = 'Water'
     } else {
-        alert('The ods are in your favor')
+        
     }  
     fight()
 }
@@ -92,56 +88,40 @@ function startEnemyAtac() {
    //START FIGHT! -- ataqueJugador 
 function fight() {
     // spanVidasJugador -- vidas-jugador
-    const spanLifeCounter = document.getElementById('gamer-life')
+    const spanLifeCounter = document.getElementById('human-life')
     // spanVidasEnemigo -- vidas-enemigo
     const spanRobotLife = document.getElementById('robot-life')
     //ataqueJugador -- ataqueEnemigo
     if(gamerAtac == enemyPower){
         //crearMensaje
-        announceWinner(" match ")
-    } else if (gamerAtac == 'Water' && enemyPower != 'Water' ) {
-        announceWinner(" beat ")
-        //vidasEnemigo
-        robotLife--
-        spanRobotLife.innerHTML = robotLife
+        announceWinner(" Match ")
     } else {
-        announceWinner(" lost ")
-        //vidasJugador
-        lifeCounter--
-        spanLifeCounter.innerHTML = lifeCounter
-        
+        announceWinner(" Lost ")
     }
-    //revisarVidas
-    lifeDoc()}
-
-function lifeDoc() {
-    showReload.style.display = 'flex'
-
-    if(robotLife == 0) {
-        endGame("Crack")
-    } else if (lifeCounter == 0) {
-        endGame("Game Over")
-    } 
-}    
+    }
+   
 // crearMensajeFina(resultadoFinal)
 function endGame(deadMark) {
+    //sectionMensajes
+    const singResult = document.getElementById('board')
+    singResult.innerHTML = deadMark
 
-    let showEnd = document.createElement('p')
-    showEnd.innerHTML = deadMark
-
-    singResult.appendChild(showEnd)
+    let waterPower = document.getElementById('water-push')
     waterPower.disabled = true
-    firePower.disabled = true 
-    earthPower.disabled = true 
+    //sectionReiniciar --reiniciar
+    const hideReload = document.getElementById('reload')  
+    hideReload.style.display='block'
 }
 function reloadAgain() {
     location.reload()
 }
 // crearMensaje(resultado)
-function announceWinner(resultFight) {
-
+function announceWinner(board) {
+    //sectionMensajes
+    const singResult = document.getElementById('board')
+    // nueva Jugada
     let showCase = document.createElement('p')
-    showCase.innerHTML = 'Your ' + gamerAtac + resultFight + enemyPower
+    singResult.innerHTML = board  
 
     singResult.appendChild(showCase)
 }

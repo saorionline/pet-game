@@ -45,7 +45,7 @@ let petPlayer
 // ataquesMokepon
 let extractAtacks
 // ataquesMokeponEnemigo
-//let enemyPetPower 
+let enemyPetPower 
 let waterPower 
 let firePower 
 let earthPower 
@@ -53,6 +53,21 @@ let earthPower
 let buttonDefend = []
 let lifeCounter = 3
 let robotLife = 3
+
+//indexAtaqueJugador
+let upsColection
+let colectionDowns
+
+//ataquesDelJugar
+const localScreen = document.getElementById('see-local')
+//ataquesDelEnemigo
+const frameVisitor = document.getElementById('visitor-screen')
+
+
+//victoriasJugador
+playerWin = 0
+//victoriasEnemigo
+winRobot = 0
 
 class superPet {
     constructor(name, photo, life) {
@@ -95,7 +110,6 @@ capi.powers.push(
         id: 'earth-push'
     }
 )
-
 ratigueya.powers.push(
     {
         name: '💧', 
@@ -112,17 +126,20 @@ ratigueya.powers.push(
 )
 
 superPets.push( hipogoge, capi, ratigueya)
-    
+   // iniciarJuego 
 function startGame(){
+    //sectionSeleccionarAtaque
     grabHiddenSection.style.display = 'none'
 
     superPets.forEach((superPet) => {
+        //opcionDeMokepones
         infoAccordion = `
         <input type="radio" name="pet" id=${superPet.name} />
         <label class= "pet-card" for=${superPet.name} >
             <img src=${superPet.photo} alt=${superPet.name} />
         </label>
         `
+        //contenedorTarjetas
         cardsBox.innerHTML += infoAccordion
 
         inputHipogoge = document.getElementById('Hipogoge')
@@ -133,12 +150,13 @@ function startGame(){
     petPress.addEventListener('click', gamerOption)
     reloadButton.addEventListener('click', reloadAgain)     
 }
-
+// seleccionarMascotaJugador
 function gamerOption() {
     hidePet.style.display = 'none'
     grabHiddenSection.style.display = 'flex'
 
    if(inputHipogoge.checked) {
+    //spanMascotaJugador
     setGamerPet.innerHTML = inputHipogoge.id
     petPlayer = inputHipogoge.id
    } else if (inputCapi.checked) {
@@ -165,10 +183,13 @@ function bringAtacks(petPlayer){
 }
 // mostrarAtaques
 function powersCase(powers) {
+    //ataques  --- ataque
     powers.forEach((power) => {
+        //ataquesMokepon
         extractAtacks = `
         <button id=${power.id} class="power defend">${power.name}</button>
         `
+        //contenedorAtaques
         boxPowerButtons.innerHTML += extractAtacks
     })
 
@@ -181,36 +202,42 @@ function powersCase(powers) {
 }
 //secuenciaAtaque
 function oneByOne() {
+    //botones
     buttonDefend.forEach((defendButton) => {
+        //boton
         defendButton.addEventListener('click', (e) => {
             if(e.target.textContent === '🔥') {
                 gamerAtac.push('Fire')
                 console.log(gamerAtac)
                 defendButton.style.background ='#112f58'
+                defendButton.disabled = true
             } else if (e.target.textContent === '💧') {
                 gamerAtac.push('Water')
                 console.log(gamerAtac)
                 defendButton.style.background ='#112f58'
+                defendButton.disabled = true
             } else {
                 gamerAtac.push('Earth')
                 console.log(gamerAtac)
                 defendButton.style.background ='#112f58'
+                defendButton.disabled = true
             }
             startEnemyAtac()
         })
     })
 }
-
+// seleccionarMascotaEnemigo
 function enemyPet() {
     let randomPet = randomOption(0 , superPets.length - 1)
+    //spanMascotaEnemigo
     setEnemyPet.innerHTML = superPets[randomPet].name
-    enemyPower = superPets[randomPet].powers
+    enemyPetPower = superPets[randomPet].powers
     oneByOne()
 }
 
-
+// ataqueAleatorioEnemigo
 function startEnemyAtac() {
-    let randomAtac = randomOption(0 , enemyPower.lenght -1)
+    let randomAtac = randomOption(0 , enemyPetPower.length -1)
     if (randomAtac == 0 || randomAtac == 1) {
         enemyPower.push('Water')
     } else if(randomAtac == 3 || randomAtac == 4) {
@@ -219,39 +246,64 @@ function startEnemyAtac() {
         enemyPower.push('Earth')
     }  
     console.log(enemyPower)
-    fight()}
+    //iniciarPelea
+    confrontation()
+}
+//iniciarPelea
+function confrontation() {
+    if (gamerAtac.length === 5) {
+        fight()
+    }
+}
+// indexAmbosOponentes(jugador, enemigo) 
+function betweenFight(human, artificial){
+    //indexAtaqueJugador = ataqueEnemigo[jugador]
+     upsColection = gamerAtac[human]
+    //indexAtaqueJugador = ataqueEnemigo[jugador]
+    colectionDowns = enemyPower[artificial]
+}
 
    //START FIGHT!
+   //combate 
 function fight() {
-    if(gamerAtac == enemyPower){
-        announceWinner(" match ")
-    } else if (gamerAtac == 'Water' && enemyPower == 'Fire' ) {
-        announceWinner(" beat ")
-        robotLife--
-        spanRobotLife.innerHTML = robotLife
-    } else if (gamerAtac == 'Earth' && enemyPower == 'Water' ) {
-        announceWinner(" beat ")
-        robotLife--
-        spanRobotLife.innerHTML = robotLife
-    }else if (gamerAtac == 'Fire' && enemyPower == 'Earth' ) {
-        announceWinner(" beat ")
-        robotLife--
-        spanRobotLife.innerHTML = robotLife
-        //countWin = countWin + 1
+    //ataqueJugador
+    for( let index=0; index < gamerAtac.length; index++) {
+       if( gamerAtac[index] === enemyPower[index]) {
+        //indexAmbosOponentes
+        betweenFight(index, index)
+        //crearMensaje
+        announceWinner("Match")
+    } else if (gamerAtac[index] === 'Fire' && enemyPower[index] === 'Earth'){
+        betweenFight(index, index)
+        announceWinner("You win!")
+        playerWin++
+         spanLifeCounter.innerHTML = playerWin
+    } else if (gamerAtac[index] === 'Water' && enemyPower[index] === 'Fire'){
+        betweenFight(index, index)
+        announceWinner("You win!")
+        playerWin++
+         spanLifeCounter.innerHTML = playerWin
+    } else if (gamerAtac[index] === 'Earth' && enemyPower[index] === 'Water'){
+        betweenFight(index, index)
+        announceWinner("You win!")
+        playerWin++
+         spanLifeCounter.innerHTML = playerWin
     } else {
-        announceWinner(" lost ")
-        lifeCounter--
-        spanLifeCounter.innerHTML = lifeCounter
-        //countLost = countLost + 1
+        betweenFight(index, index)
+        announceWinner("You lose")
+        winRobot++
+        spanRobotLife.innerHTML = winRobot
     }
     lifeDoc()}
-// revisarVidas
+}// revisarVidas
 function lifeDoc() {
-    sectionReload.style.display = 'flex'
-
-    if(robotLife == 0) {
+    //sectionReload.style.display = 'flex'
+//vidasEnemigo
+    if(playerWin === winRobot) {
+        endGame("Match Match")
+    } else if (playerWin > winRobot) {
         endGame("Crack")
-    } else if (lifeCounter == 0) {
+    } else {
         endGame("Game Over")
     } 
 }    
@@ -260,29 +312,32 @@ function endGame(deadMark) {
 
     singResult.innerHTML = deadMark
 
-    singResult.appendChild(showEnd)
-    waterPower.disabled = true
-    firePower.disabled = true 
-    earthPower.disabled = true 
-
     sectionReload.style.display = "block"
 
 }
+// reiniciarJuego 
 function reloadAgain() {
     location.reload()
 }
-// crearMensajeResultado
+// crearMensaje (resultado)
 function announceWinner(resultFight) {
-
-    let showFight = document.createElement('p')
-    showFight.innerHTML = enemyPower + gamerAtac
-    
+    // when both enemyPower and gamerAtac were in the same board
+    /* let showFight = document.createElement('p')
+    showFight.innerHTML = enemyPower + gamerAtac */
+ // nuevoAtaqueDelJugador  ---- nuevoAtaqueDelJugador
+    let newFromHuman = document.createElement('p')
+    let robotNewBack = document.createElement('p')
 // sectionMensajes     resultado
-    singResult.innerHTML = board
-    singResult.appendChild(showFight)
+    singResult.innerHTML = resultFight
+
+    newFromHuman.innerHTML = upsColection
+    robotNewBack.innerHTML = colectionDowns
     
+    localScreen.appendChild(newFromHuman)
+    frameVisitor.appendChild(robotNewBack)
 
 }
+// aleatorio
 function randomOption(min, max) {
     return Math.floor(Math.random() * (max-min+1)+min)
 }

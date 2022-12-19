@@ -12,12 +12,17 @@
 <body>
     <h1 class="title"> Pet Game 1.0 🌅 🌴 🌊 </h1>
     <section class="frame-container">
-        <p id="board" class="board-style">Select your pet</p>
-        <p id="gamer-pet">Your Pet</p>
-        <p><b id="gamer-life">3</b> 💙 </p>
-        <p id="opponent-pet">Enemy Pet</p>
-        <p><b id="robot-life">3</b> 🧡</p>
-    </section>
+        <p id="board" class="board-style">Select your pet</p></section>
+        <section class="frame-container">
+            <p id="gamer-pet">Your Pet</p>
+            <p id="gamer-life">0 </p>
+            <p id="opponent-pet">Enemy Pet</p>
+            <p id="robot-life">0 </p>
+        </section>
+        <div class ="frame-container ring">
+            <p id="see-local"></p>
+            <p id="visitor-screen"></p>
+        </div>
     <section id="choose-pet">
         <div id="card-box-code" class="card-container"> </div>     
         <button id="pet-press" class="button-pet" >Select</button>
@@ -29,7 +34,7 @@
     </section>
    
         <section id="reload" >
-            <button id="game-push">Play again</button>
+            <button id="game-push" class="change-color">Play again</button>
         </section>  
         
     <script src="./js/track.js"></script>

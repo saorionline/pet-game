@@ -10,31 +10,36 @@
     <link rel="stylesheet" href="./styles/third_is_mobile.css">
 </head>
 <body>
-    <h1 class="title"> Pet Game 1.0 🌅 🌴 🌊 </h1>
-    <section class="frame-container">
-        <p id="board" class="board-style">Select your pet</p></section>
-        <section class="frame-container">
+        <section class="ring">
+            <p id="see-local"></p>
+            <p id="visitor-screen"></p>
+        </section>
+    <section id="choose-pet">
+        <div id="card-box-code" class="card-container"> </div>     
+        <button id="pet-press" class="button-pet" >Select</button>
+        <p id="board">Select your pet</p>
+    </section>
+    <section id="select-ataq">
+        <div class="frame-container">
             <p id="gamer-pet">Your Pet</p>
             <p id="gamer-life">0 </p>
             <p id="opponent-pet">Enemy Pet</p>
             <p id="robot-life">0 </p>
-        </section>
-        <div class ="frame-container ring">
-            <p id="see-local"></p>
-            <p id="visitor-screen"></p>
         </div>
-    <section id="choose-pet">
-        <div id="card-box-code" class="card-container"> </div>     
-        <button id="pet-press" class="button-pet" >Select</button>
-    </section>
-    
-    <section id="select-ataq">
         <h2 class="subtitle-b">Launch atack</h2>
         <div id="push-box" class="button-container"></div>
     </section>
+    <section id="place-map" class="map-support">
+        <h1 class="title"> Pet Map 1.0 🌅 🌴 🌊 </h1>
+        <canvas id="mapper" class="map-inside"> </canvas>
+        <button onmouseup="stop()" onmousedown="up()"> Up </button>
+        <button onmouseup="stop()" onmousedown="down()"> Down </button>
+        <button onmouseup="stop()" onmousedown="left()"> Left </button>
+        <button onmouseup="stop()" onmousedown=" right()"> Right </button>
+    </section>
    
-        <section id="reload" >
-            <button id="game-push" class="change-color">Play again</button>
+        <section id="reload">
+            <button id="game-push" class="change-color"> Play again </button>
         </section>  
         
     <script src="./js/track.js"></script>

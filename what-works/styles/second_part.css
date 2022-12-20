@@ -64,7 +64,17 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.map-support {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
+.map-inside {
+    background-color: pink;
+    margin-top: 50px;
+}
 
 
 

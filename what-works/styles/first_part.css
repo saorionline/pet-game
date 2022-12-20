@@ -46,7 +46,7 @@ body {
     align-items: center;
 }
 
-.board-style {
+/* .board-style {
     font-size: 16px;
     color: #F3CCFF;
     background-color: #001253;
@@ -54,7 +54,7 @@ body {
     width: 200px;
     border-radius: 6px;
     padding: 14px;
-}
+} */
 
 
 .card-container {

@@ -62,12 +62,19 @@ let colectionDowns
 const localScreen = document.getElementById('see-local')
 //ataquesDelEnemigo
 const frameVisitor = document.getElementById('visitor-screen')
-
-
 //victoriasJugador
 playerWin = 0
 //victoriasEnemigo
 winRobot = 0
+
+//sectionVerMapa ver-mapa
+const boxLocate = document.getElementById('place-map')
+// mapa
+const framePoint = document.getElementById('mapper')
+// lienzo
+let artWork = framePoint.getContext('2d')
+//intervalo
+let pieceTime
 
 class superPet {
     constructor(name, photo, life) {
@@ -75,6 +82,14 @@ class superPet {
         this.photo = photo
         this.life = life
         this.powers = []
+        this.x = 20
+        this.y = 30
+        this.hoWide = 80
+        this.howTall = 80
+        this.imgPet = new Image()
+        this.imgPet.src = photo
+        this.xSpeed = 0
+        this.ySpeed = 0 
     }
 }
 
@@ -130,7 +145,7 @@ superPets.push( hipogoge, capi, ratigueya)
 function startGame(){
     //sectionSeleccionarAtaque
     grabHiddenSection.style.display = 'none'
-
+    boxLocate.style.display = 'none'
     superPets.forEach((superPet) => {
         //opcionDeMokepones
         infoAccordion = `
@@ -150,10 +165,54 @@ function startGame(){
     petPress.addEventListener('click', gamerOption)
     reloadButton.addEventListener('click', reloadAgain)     
 }
+
+//detenerMovimiento
+function stop() {
+    capi.xSpeed = 0
+    capi.ySpeed = 0
+}
+//moverDerecha
+function right() {
+    capi.xSpeed = 5
+    paintAnimal()
+}
+//moveAround
+function left() {
+    capi.xSpeed = - 5
+    paintAnimal()
+}
+//moverAbajo
+function down() {
+    capi.ySpeed = 5
+    paintAnimal()
+}
+//moverArriba
+function up() {
+    capi.ySpeed = - 5
+    paintAnimal()
+}
+//pintarPersonaje
+function paintAnimal() {
+    capi.x = capi.x + capi.xSpeed
+    capi.y = capi.y + capi.ySpeed
+    artWork.clearRect(0, 0, framePoint.width, framePoint.height)
+    //lienzo
+    artWork.drawImage(
+        // capipepo mapaFoto
+        capi.imgPet,
+        capi.x,
+        capi.y,
+        capi.hoWide,
+        capi.howTall
+    )
+}
 // seleccionarMascotaJugador
 function gamerOption() {
     hidePet.style.display = 'none'
-    grabHiddenSection.style.display = 'flex'
+    //grabHiddenSection.style.display = 'flex'
+    boxLocate.style.display = 'flex'
+    //intervalo
+    pieceTime = setInterval(paintAnimal, 50)
 
    if(inputHipogoge.checked) {
     //spanMascotaJugador
@@ -210,17 +269,17 @@ function oneByOne() {
                 gamerAtac.push('Fire')
                 console.log(gamerAtac)
                 defendButton.style.background ='#112f58'
-                defendButton.disabled = true
+                //defendButton.disabled = true
             } else if (e.target.textContent === '💧') {
                 gamerAtac.push('Water')
                 console.log(gamerAtac)
                 defendButton.style.background ='#112f58'
-                defendButton.disabled = true
+                //defendButton.disabled = true
             } else {
                 gamerAtac.push('Earth')
                 console.log(gamerAtac)
                 defendButton.style.background ='#112f58'
-                defendButton.disabled = true
+                //defendButton.disabled = true
             }
             startEnemyAtac()
         })
@@ -234,7 +293,6 @@ function enemyPet() {
     enemyPetPower = superPets[randomPet].powers
     oneByOne()
 }
-
 // ataqueAleatorioEnemigo
 function startEnemyAtac() {
     let randomAtac = randomOption(0 , enemyPetPower.length -1)
@@ -262,7 +320,6 @@ function betweenFight(human, artificial){
     //indexAtaqueJugador = ataqueEnemigo[jugador]
     colectionDowns = enemyPower[artificial]
 }
-
    //START FIGHT!
    //combate 
 function fight() {

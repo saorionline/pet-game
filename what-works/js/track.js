@@ -75,15 +75,21 @@ const framePoint = document.getElementById('mapper')
 let artWork = framePoint.getContext('2d')
 //intervalo
 let pieceTime
+// mapaBackground
+let spaceSee = new Image()
+spaceSee.src = './assets/world.jpg'
+//mascotaJugadorObjeto
+let creature
 
+//mokepon 
 class superPet {
-    constructor(name, photo, life) {
+    constructor(name, photo, life, x=10, y=10) {
         this.name = name
         this.photo = photo
         this.life = life
         this.powers = []
-        this.x = 20
-        this.y = 30
+        this.x = x
+        this.y = y
         this.hoWide = 80
         this.howTall = 80
         this.imgPet = new Image()
@@ -91,11 +97,23 @@ class superPet {
         this.xSpeed = 0
         this.ySpeed = 0 
     }
+    placeFigure() {
+        //lienzo
+        artWork.drawImage(
+        // capipepo mapaFoto
+        this.imgPet,
+        this.x,
+        this.y,
+        this.hoWide,
+        this.howTall
+    )
+    }
 }
 
 let hipogoge = new superPet('Hipogoge', './assets/hipogoge.png', 3)
 let capi = new superPet('Capi', './assets/capi.png', 3)
 let ratigueya = new superPet('Ratigueya', './assets/ratigueya.png', 3)
+let obstacle = new superPet('Ratigueya', './assets/allien.png', 3, 850, 250)
 
 hipogoge.powers.push(
     {
@@ -141,7 +159,27 @@ ratigueya.powers.push(
 )
 
 superPets.push( hipogoge, capi, ratigueya)
-   // iniciarJuego 
+
+//obtenerObjetosMascota
+function matchPet () {
+    for (let index = 0; index < superPets.length; index++){
+        if(petPlayer === superPets[index].name) {
+            return superPets[index]
+        }
+    }
+}
+
+//iniciarMapa
+function initiateZone() {
+    creature = matchPet(petPlayer)
+    framePoint.width = 999
+    framePoint.height = 400
+    pieceTime = setInterval(paintAnimal, 50)
+    window.addEventListener('keydown', keyPressed)
+    window.addEventListener('keyup', stop)
+}   
+
+// iniciarJuego 
 function startGame(){
     //sectionSeleccionarAtaque
     grabHiddenSection.style.display = 'none'
@@ -168,52 +206,69 @@ function startGame(){
 
 //detenerMovimiento
 function stop() {
-    capi.xSpeed = 0
-    capi.ySpeed = 0
+    //mascotaJugadorObjeto
+    creature.xSpeed = 0
+    creature.ySpeed = 0
+}
+// sePresionaUnaTecla
+function keyPressed(event) {
+    switch(event.key) {
+        case 'ArrowUp':
+            up()
+            break
+        case 'ArrowDown':
+            down()
+            break  
+        case 'ArrowLeft':
+            left()
+            break   
+        case 'ArrowRight':
+            right()
+            break 
+        default:
+            break;    
+    }
 }
 //moverDerecha
 function right() {
-    capi.xSpeed = 5
+    creature.xSpeed = 5
     paintAnimal()
 }
 //moveAround
 function left() {
-    capi.xSpeed = - 5
+    creature.xSpeed = - 5
     paintAnimal()
 }
 //moverAbajo
 function down() {
-    capi.ySpeed = 5
+    creature.ySpeed = 5
     paintAnimal()
 }
 //moverArriba
 function up() {
-    capi.ySpeed = - 5
+    creature.ySpeed = - 5
     paintAnimal()
 }
 //pintarPersonaje
 function paintAnimal() {
-    capi.x = capi.x + capi.xSpeed
-    capi.y = capi.y + capi.ySpeed
+    creature.x = creature.x + creature.xSpeed
+    creature.y = creature.y + creature.ySpeed
     artWork.clearRect(0, 0, framePoint.width, framePoint.height)
-    //lienzo
     artWork.drawImage(
-        // capipepo mapaFoto
-        capi.imgPet,
-        capi.x,
-        capi.y,
-        capi.hoWide,
-        capi.howTall
+        spaceSee,
+        0,
+        0,
+        framePoint.width,
+        framePoint.height
     )
+    creature.placeFigure()
+    obstacle.placeFigure()
 }
 // seleccionarMascotaJugador
 function gamerOption() {
     hidePet.style.display = 'none'
     //grabHiddenSection.style.display = 'flex'
-    boxLocate.style.display = 'flex'
-    //intervalo
-    pieceTime = setInterval(paintAnimal, 50)
-
+   
    if(inputHipogoge.checked) {
     //spanMascotaJugador
     setGamerPet.innerHTML = inputHipogoge.id
@@ -228,6 +283,9 @@ function gamerOption() {
     alert ('Please select a Pet')
    }  
    bringAtacks(petPlayer)
+   boxLocate.style.display = 'flex'
+   //intervalo
+  initiateZone()
    enemyPet()
 }
 // extraerAtaques
@@ -251,13 +309,10 @@ function powersCase(powers) {
         //contenedorAtaques
         boxPowerButtons.innerHTML += extractAtacks
     })
-
     buttonDefend = document.querySelectorAll('.defend')
     waterPower = document.getElementById('water-push')
     firePower = document.getElementById('fire-push')
     earthPower = document.getElementById('earth-push')
-
-
 }
 //secuenciaAtaque
 function oneByOne() {

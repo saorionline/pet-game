@@ -1,8 +1,16 @@
-@media( max-width: 360px) {
+@media( max-width: 560px) {
     .card-container {
         flex-direction: column;
     }
     .frame, .title  {
         font-size: 28px;
+    }
+}
+
+@media( max-width: 300px) {
+    .map-support div {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
     }
 }

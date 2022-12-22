@@ -1,5 +1,3 @@
-
-
 #select-ataq {
     flex-direction: column;
     justify-content: center;
@@ -10,7 +8,6 @@
     font-size: 16px;
     color: #3F0071;
 }
-
 .subtitle-b {
     font-size: 16px;
     color: #332FD0;
@@ -20,40 +17,32 @@
     border-radius: 6px;
     padding: 14px;
 }
-
 .power {
     padding: 10px;
     box-sizing: border-box;
     border-radius: 10px;
-    width: 240px;
+    width: 80px;
     border-color: transparent;
     font-family: 'Poppins', sans-serif;
     font-size: 40px;
 
 }
-
 .power:hover {
     background-color: white;
     opacity: 50px;
 }
-
-
-
 .button-container {
     display: flex;
     gap: 20px;
 }
-
 .change-color:hover{
     background-color: #BA94D1;
 }
-
 #reload {
     flex-direction: column;
     flex-wrap: wrap;
     align-content: center;
 }
-
 #game-push {
     border-radius: 10px;
     width: 180px;
@@ -63,14 +52,22 @@
     font-size: 20px;
     font-family: 'Poppins', sans-serif;
 }
-
 .map-support {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-
+.map-support button {
+    width: 80px;
+    height: 40px;
+    border-radius: 20px;
+    background: transparent;
+    border: 2px solid purple;
+    color: purple;
+    font-family: 'Poppins', sans-serif;
+    margin: 10px;
+}
 .map-inside {
     background-color: pink;
     margin-top: 50px;

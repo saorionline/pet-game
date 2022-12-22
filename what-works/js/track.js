@@ -80,20 +80,38 @@ let spaceSee = new Image()
 spaceSee.src = './assets/world.jpg'
 //mascotaJugadorObjeto
 let creature
+//alturaQueBuscamos
+let longMeasure
+//anchoDelMapa
+let latitude = window.innerWidth - 20
+longMeasure = latitude * 400 / 999
+//mapa
+framePoint.width = latitude
+framePoint.height = longMeasure
+//anchoMaximoDelMapa
+const maxTake = 350
+
+if (latitude > maxTake ) {
+    latitude = maxTake - 20
+}
+
 
 //mokepon 
 class superPet {
-    constructor(name, photo, life, x=10, y=10) {
+    constructor(name, photo, life) {
         this.name = name
         this.photo = photo
         this.life = life
         this.powers = []
-        this.x = x
-        this.y = y
-        this.hoWide = 80
-        this.howTall = 80
+        // ancho
+        this.hoWide = 120
+        this.howTall = 120
+        this.x = randomOption( 0, framePoint.width - this.hoWide)
+        this.y = randomOption( 0, framePoint.height - this.howTall)        
+        //mapaFoto 
         this.imgPet = new Image()
         this.imgPet.src = photo
+        //velocidadX
         this.xSpeed = 0
         this.ySpeed = 0 
     }
@@ -110,12 +128,20 @@ class superPet {
     }
 }
 
-let hipogoge = new superPet('Hipogoge', './assets/hipogoge.png', 3)
-let capi = new superPet('Capi', './assets/capi.png', 3)
-let ratigueya = new superPet('Ratigueya', './assets/ratigueya.png', 3)
-let obstacle = new superPet('Ratigueya', './assets/allien.png', 3, 850, 250)
+let hipogoge = new superPet('Hipogoge', './assets/doll.png', 5)
+let capi = new superPet('Capi', './assets/capi.png', 5)
+let ratigueya = new superPet('Ratigueya', './assets/robot.png', 5)
+let obstacle = new superPet(' Allien', './assets/allien.png', 5)
 
 hipogoge.powers.push(
+    {
+        name: '💧' , 
+        id: 'water-push'
+    },
+    {
+        name: '💧' , 
+        id: 'water-push'
+    },
     {
         name: '💧' , 
         id: 'water-push'
@@ -131,6 +157,14 @@ hipogoge.powers.push(
 )
 capi.powers.push(
     {
+        name: '🌱', 
+        id: 'earth-push'
+    },
+    {
+        name: '🌱', 
+        id: 'earth-push'
+    },
+    {
         name: '💧', 
         id: 'water-push'
     },
@@ -144,6 +178,14 @@ capi.powers.push(
     }
 )
 ratigueya.powers.push(
+    {
+        name: '🔥', 
+        id: 'fire-push'
+    },
+    {
+        name: '🔥', 
+        id: 'fire-push'
+    },
     {
         name: '💧', 
         id: 'water-push'
@@ -159,7 +201,33 @@ ratigueya.powers.push(
 )
 
 superPets.push( hipogoge, capi, ratigueya)
+//revisarColision 
+function reviewOverlap(antagonist) {
+    const yUpRobot = antagonist.y
+    const robotBottom = antagonist.y + antagonist.hoWide
+    const rightEnemy = antagonist.x + antagonist.howTall
+    const opponentLeft = antagonist.x
 
+    const limitUpPet = creature.y
+    const bottomYpet = creature.y + creature.hoWide
+    const rightAnimal = creature.x + creature.howTall
+    const petLeft = creature.x
+    if (
+        //abajoMascota    arribaEnemigo
+        bottomYpet < yUpRobot ||
+        //arribaMascota     abajoEnemigo
+        limitUpPet > robotBottom ||
+        //derechaMascota     izquierdaEnemigo
+        rightAnimal < opponentLeft ||
+        //izquierdaMascota   derechaEnemigo
+        petLeft > rightEnemy
+    ) { return
+    } 
+    stop()
+    grabHiddenSection.style.display = 'flex'
+    boxLocate.style.display = 'none'
+    enemyPet(artificial)
+}
 //obtenerObjetosMascota
 function matchPet () {
     for (let index = 0; index < superPets.length; index++){
@@ -172,8 +240,7 @@ function matchPet () {
 //iniciarMapa
 function initiateZone() {
     creature = matchPet(petPlayer)
-    framePoint.width = 999
-    framePoint.height = 400
+    
     pieceTime = setInterval(paintAnimal, 50)
     window.addEventListener('keydown', keyPressed)
     window.addEventListener('keyup', stop)
@@ -263,11 +330,13 @@ function paintAnimal() {
     )
     creature.placeFigure()
     obstacle.placeFigure()
+    if ( creature.xSpeed != 0 || creature.ySpeed != 0) {
+        reviewOverlap(obstacle)
+    }
 }
 // seleccionarMascotaJugador
 function gamerOption() {
     hidePet.style.display = 'none'
-    //grabHiddenSection.style.display = 'flex'
    
    if(inputHipogoge.checked) {
     //spanMascotaJugador
@@ -324,17 +393,17 @@ function oneByOne() {
                 gamerAtac.push('Fire')
                 console.log(gamerAtac)
                 defendButton.style.background ='#112f58'
-                //defendButton.disabled = true
+                defendButton.disabled = true
             } else if (e.target.textContent === '💧') {
                 gamerAtac.push('Water')
                 console.log(gamerAtac)
                 defendButton.style.background ='#112f58'
-                //defendButton.disabled = true
+                defendButton.disabled = true
             } else {
                 gamerAtac.push('Earth')
                 console.log(gamerAtac)
                 defendButton.style.background ='#112f58'
-                //defendButton.disabled = true
+                defendButton.disabled = true
             }
             startEnemyAtac()
         })
@@ -389,17 +458,17 @@ function fight() {
         betweenFight(index, index)
         announceWinner("You win!")
         playerWin++
-         spanLifeCounter.innerHTML = playerWin
+        spanLifeCounter.innerHTML = playerWin
     } else if (gamerAtac[index] === 'Water' && enemyPower[index] === 'Fire'){
         betweenFight(index, index)
         announceWinner("You win!")
         playerWin++
-         spanLifeCounter.innerHTML = playerWin
+        spanLifeCounter.innerHTML = playerWin
     } else if (gamerAtac[index] === 'Earth' && enemyPower[index] === 'Water'){
         betweenFight(index, index)
         announceWinner("You win!")
         playerWin++
-         spanLifeCounter.innerHTML = playerWin
+        spanLifeCounter.innerHTML = playerWin
     } else {
         betweenFight(index, index)
         announceWinner("You lose")

@@ -31,7 +31,7 @@ const boxPowerButtons = document.getElementById('push-box')
 //jugadorId
 let memberId = null
 //mokepones
-let superPets=[]
+let mokepons=[]
 // ataqueJugador 
 let gamerAtac =[]
 //ataqueEnemigo
@@ -39,9 +39,9 @@ let enemyPower = []
 // opcionDeMokepones
 let infoAccordion
 
-let inputHipogoge 
+let inputHipogoge
 let inputCapi 
-let inputRatigueya 
+let inputRatigueya
 // mascotaJugador
 let petPlayer
 // ataquesMokepon
@@ -99,8 +99,9 @@ if (latitude > maxTake ) {
 
 
 //mokepon 
-class superPet {
-    constructor(name, photo, life) {
+class Mokepon {
+    constructor(name, photo, life, id=null) {
+        this.id = id
         this.name = name
         this.photo = photo
         this.life = life
@@ -117,6 +118,7 @@ class superPet {
         this.xSpeed = 0
         this.ySpeed = 0 
     }
+    //pintarMokepon
     placeFigure() {
         //lienzo
         artWork.drawImage(
@@ -130,12 +132,11 @@ class superPet {
     }
 }
 
-let hipogoge = new superPet('Hipogoge', './assets/doll.png', 5)
-let capi = new superPet('Capi', './assets/capi.png', 5)
-let ratigueya = new superPet('Ratigueya', './assets/robot.png', 5)
-let obstacle = new superPet(' Allien', './assets/allien.png', 5)
+let hipogoge = new Mokepon('Hipogoge', './assets/hipogoge.png', 5)
+let capi = new Mokepon('Capi', './assets/capi.png', 5)
+let ratigueya = new Mokepon('Robot', './assets/ratigueya.png', 5)
 
-hipogoge.powers.push(
+const HIPOGOGE_POWERS = [
     {
         name: '💧' , 
         id: 'water-push'
@@ -156,8 +157,10 @@ hipogoge.powers.push(
         name: '🌱', 
         id: 'earth-push'
     }
-)
-capi.powers.push(
+]
+hipogoge.powers.push(...HIPOGOGE_POWERS)
+
+const CAPI_POWERS = [
     {
         name: '🌱', 
         id: 'earth-push'
@@ -178,8 +181,10 @@ capi.powers.push(
         name: '🌱', 
         id: 'earth-push'
     }
-)
-ratigueya.powers.push(
+]
+capi.powers.push(...CAPI_POWERS)
+
+const RATIGUEYA_POWERS= [
     {
         name: '🔥', 
         id: 'fire-push'
@@ -200,15 +205,88 @@ ratigueya.powers.push(
         name: '🌱', 
         id: 'earth-push'
     }
-)
+]
+ratigueya.powers.push(...RATIGUEYA_POWERS)
 
-superPets.push( hipogoge, capi, ratigueya)
+/* const ALLIEN_POWERS = [
+    {
+        name: '💧' , 
+        id: 'water-push'
+    },
+    {
+        name: '💧' , 
+        id: 'water-push'
+    },
+    {
+        name: '💧' , 
+        id: 'water-push'
+    },
+    {
+        name: '🔥', 
+        id: 'fire-push'
+    },
+    {
+        name: '🌱', 
+        id: 'earth-push'
+    }
+]
+allien.powers.push(...ALLIEN_POWERS)
+
+const HIPOGOGE_POWERS = [
+    {
+        name: '🌱', 
+        id: 'earth-push'
+    },
+    {
+        name: '🌱', 
+        id: 'earth-push'
+    },
+    {
+        name: '💧', 
+        id: 'water-push'
+    },
+    {
+        name: '🔥', 
+        id: 'fire-push'
+    },
+    {
+        name: '🌱', 
+        id: 'earth-push'
+    }
+]
+hipogoge.powers.push(...HIPOGOGE_POWERS)
+
+const RATIGUEYA_POWERS= [
+    {
+        name: '🔥', 
+        id: 'fire-push'
+    },
+    {
+        name: '🔥', 
+        id: 'fire-push'
+    },
+    {
+        name: '💧', 
+        id: 'water-push'
+    },
+    {
+        name: '🔥', 
+        id: 'fire-push'
+    },
+    {
+        name: '🌱', 
+        id: 'earth-push'
+    }
+]
+ratigueya.powers.push(...RATIGUEYA_POWERS) */
+
+mokepons.push( hipogoge, capi, ratigueya)
 //revisarColision 
-function reviewOverlap(artificial) {
-    const yUpRobot = artificial.y
-    const robotBottom = artificial.y + artificial.hoWide
-    const rightEnemy = artificial.x + artificial.howTall
-    const opponentLeft = artificial.x
+function reviewOverlap(attacker) {
+    const yUpRobot = attacker.y
+    const robotBottom = attacker.y + attacker.hoWide
+    const rightEnemy = attacker.x + attacker.howTall
+    const opponentLeft = attacker.x
 
     const limitUpPet = creature.y
     const bottomYpet = creature.y + creature.hoWide
@@ -228,13 +306,13 @@ function reviewOverlap(artificial) {
     stop()
     grabHiddenSection.style.display = 'flex'
     boxLocate.style.display = 'none'
-    enemyPet(artificial)
+    enemyPet(attacker)
 }
 //obtenerObjetosMascota
 function matchPet () {
-    for (let index = 0; index < superPets.length; index++){
-        if(petPlayer === superPets[index].name) {
-            return superPets[index]
+    for (let index = 0; index < mokepons.length; index++){
+        if(petPlayer === mokepons[index].name) {
+            return mokepons[index]
         }
     }
 }
@@ -253,12 +331,12 @@ function startGame(){
     //sectionSeleccionarAtaque
     grabHiddenSection.style.display = 'none'
     boxLocate.style.display = 'none'
-    superPets.forEach((superPet) => {
+    mokepons.forEach((mokepon) => {
         //opcionDeMokepones
         infoAccordion = `
-        <input type="radio" name="pet" id=${superPet.name} />
-        <label class= "pet-card" for=${superPet.name} >
-            <img src=${superPet.photo} alt=${superPet.name} />
+        <input type='radio' name='pet' id=${mokepon.name} />
+        <label class= 'pet-card' for=${mokepon.name} >
+            <img src=${mokepon.photo} alt=${mokepon.name} />
         </label>
         `
         //contenedorTarjetas
@@ -274,8 +352,9 @@ function startGame(){
     
     gameLogin()
 }
+//unirseAlJuego
 function gameLogin() {
-    fetch("http://localhost:8080/login")
+    fetch('http://localhost:8080/login')
         .then(function (res) {
             console.log(res)
                 if (res.ok) {
@@ -333,7 +412,7 @@ function up() {
     creature.ySpeed = - 5
     paintAnimal()
 }
-//pintarPersonaje
+//pintarCanvas
 function paintAnimal() {
     creature.x = creature.x + creature.xSpeed
     creature.y = creature.y + creature.ySpeed
@@ -346,10 +425,12 @@ function paintAnimal() {
         framePoint.height
     )
     creature.placeFigure()
-    obstacle.placeFigure()
+    sendLocation(creature.x, creature.y)
+    obstacleOne.placeFigure()
     if ( creature.xSpeed != 0 || creature.ySpeed != 0) {
-        reviewOverlap(obstacle)
+        reviewOverlap(obstacleOne)
     }
+
 }
 //enviarPosicion
 function sendLocation ( x, y) {
@@ -363,6 +444,30 @@ function sendLocation ( x, y) {
             y
         })
     })
+    .then(function (res) {
+        if (res.ok) {
+            res.json()
+            .then(function({ attackers }) {
+                    console.log(attackers)
+                    attackers.forEach(function (attacker){
+                        //mokeponEnemigo
+                        let obstacle = null
+                        //mokeponNombre    .nombre
+                        const mokeponAllias = attacker.mokepon.name || ''
+                        if (mokeponAllias === 'Allien') {
+                            obstacle = new Mokepon('Allien', './assets/allien.png', 5)
+                        } else if(mokeponAllias === 'Hipogoge') {
+                            obstacle = new Mokepon('Hipogoge', './assets/hipogoge.png', 5)
+                        } else if (mokeponAllias === 'Ratigueya') {
+                            obstacle = new Mokepon('Ratigueya', './assets/ratigueya.png', 5)
+                    }
+                    obstacle.x = attacker.x
+                    obstacle.y = attacker.y
+                    obstacle.placeFigure()
+                    })
+                })
+            }
+        })
 }
 // seleccionarMascotaJugador
 function gamerOption() {
@@ -386,14 +491,14 @@ function gamerOption() {
    //seleccionarMokepon
    creatureSelect(petPlayer)
    //intervalo
-  initiateZone()
+   initiateZone()
    enemyPet()
 }
 function creatureSelect(petPlayer) {
     fetch(`http://localhost:8080/mokepon/${memberId}`, {
-        method: "post",
+        method: 'post',
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             mokepon: petPlayer
@@ -403,9 +508,9 @@ function creatureSelect(petPlayer) {
 // extraerAtaques
 function bringAtacks(petPlayer){
     let powers
-    for (let index = 0; index < superPets.length; index++){
-        if(petPlayer === superPets[index].name) {
-            powers = superPets[index].powers
+    for (let index = 0; index < mokepons.length; index++){
+        if(petPlayer === mokepons[index].name) {
+            powers = mokepons[index].powers
         }
     }
     powersCase(powers)
@@ -416,7 +521,7 @@ function powersCase(powers) {
     powers.forEach((power) => {
         //ataquesMokepon
         extractAtacks = `
-        <button id=${power.id} class="power defend">${power.name}</button>
+        <button id=${power.id} class='power defend'>${power.name}</button>
         `
         //contenedorAtaques
         boxPowerButtons.innerHTML += extractAtacks
@@ -454,10 +559,10 @@ function oneByOne() {
 }
 // seleccionarMascotaEnemigo
 function enemyPet() {
-    let randomPet = randomOption(0 , superPets.length - 1)
+    let randomPet = randomOption(0 , mokepons.length - 1)
     //spanMascotaEnemigo
-    setEnemyPet.innerHTML = superPets[randomPet].name
-    enemyPetPower = superPets[randomPet].powers
+    setEnemyPet.innerHTML = mokepons[randomPet].name
+    enemyPetPower = mokepons[randomPet].powers
     oneByOne()
 }
 // ataqueAleatorioEnemigo
@@ -481,11 +586,11 @@ function confrontation() {
     }
 }
 // indexAmbosOponentes(jugador, enemigo) 
-function betweenFight(human, artificial){
+function betweenFight(human, attacker){
     //indexAtaqueJugador = ataqueEnemigo[jugador]
      upsColection = gamerAtac[human]
     //indexAtaqueJugador = ataqueEnemigo[jugador]
-    colectionDowns = enemyPower[artificial]
+    colectionDowns = enemyPower[attacker]
 }
    //START FIGHT!
    //combate 
@@ -496,25 +601,25 @@ function fight() {
         //indexAmbosOponentes
         betweenFight(index, index)
         //crearMensaje
-        announceWinner("Match")
+        announceWinner('Match')
     } else if (gamerAtac[index] === 'Fire' && enemyPower[index] === 'Earth'){
         betweenFight(index, index)
-        announceWinner("You win!")
+        announceWinner('You win!')
         playerWin++
         spanLifeCounter.innerHTML = playerWin
     } else if (gamerAtac[index] === 'Water' && enemyPower[index] === 'Fire'){
         betweenFight(index, index)
-        announceWinner("You win!")
+        announceWinner('You win!')
         playerWin++
         spanLifeCounter.innerHTML = playerWin
     } else if (gamerAtac[index] === 'Earth' && enemyPower[index] === 'Water'){
         betweenFight(index, index)
-        announceWinner("You win!")
+        announceWinner('You win!')
         playerWin++
         spanLifeCounter.innerHTML = playerWin
     } else {
         betweenFight(index, index)
-        announceWinner("You lose")
+        announceWinner('You lose')
         winRobot++
         spanRobotLife.innerHTML = winRobot
     }
@@ -524,11 +629,11 @@ function lifeDoc() {
     //sectionReload.style.display = 'flex'
 //vidasEnemigo
     if(playerWin === winRobot) {
-        endGame("Match Match")
+        endGame('Match Match')
     } else if (playerWin > winRobot) {
-        endGame("Crack")
+        endGame('Crack')
     } else {
-        endGame("Game Over")
+        endGame('Game Over')
     } 
 }    
 // crearMensajeFinal(resultadoFinal)
@@ -536,7 +641,7 @@ function endGame(deadMark) {
 
     singResult.innerHTML = deadMark
 
-    sectionReload.style.display = "block"
+    sectionReload.style.display = 'block'
 
 }
 // reiniciarJuego 

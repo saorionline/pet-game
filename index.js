@@ -3,7 +3,8 @@ const cors = require("cors")
 const app = express()
 app.use(cors())
 app.use(express.json())
-
+//jugador
+const members = []
 //Jugador
 class Member {
     constructor(id) {
@@ -25,8 +26,7 @@ class Mokepon {
         this.name = name
     }
 }
-//jugador
-const members = []
+
 //"/unirse"
 app.get( "/login", (req, res) => {
     const id = `${Math.random()}`
@@ -48,7 +48,6 @@ app.post("/mokepon/:memberId", (req, res) => {
     }
     console.log(members)
     console.log(memberId)
-    res.end()
 }) 
 
 app.post("/mokepon/:memberId/locate", (req, res) => {
@@ -61,8 +60,11 @@ app.post("/mokepon/:memberId/locate", (req, res) => {
     if (memberIndex >=0) {
         members[memberIndex].updatePosition(x, y)
     }
-    
-    res.end()
+    //enemigos
+    const attackers = members.filter((member) => memberId !== member.id) 
+    res.send({
+        attackers
+    })
 })
 app.listen( 8080, () => {
     console.log(" On the air ")

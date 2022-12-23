@@ -28,6 +28,8 @@ const cardsBox = document.getElementById('card-box-code')
 // contenedorAtaques
 const boxPowerButtons = document.getElementById('push-box')
 //Other Variables
+//jugadorId
+let memberId = null
 //mokepones
 let superPets=[]
 // ataqueJugador 
@@ -202,11 +204,11 @@ ratigueya.powers.push(
 
 superPets.push( hipogoge, capi, ratigueya)
 //revisarColision 
-function reviewOverlap(antagonist) {
-    const yUpRobot = antagonist.y
-    const robotBottom = antagonist.y + antagonist.hoWide
-    const rightEnemy = antagonist.x + antagonist.howTall
-    const opponentLeft = antagonist.x
+function reviewOverlap(artificial) {
+    const yUpRobot = artificial.y
+    const robotBottom = artificial.y + artificial.hoWide
+    const rightEnemy = artificial.x + artificial.howTall
+    const opponentLeft = artificial.x
 
     const limitUpPet = creature.y
     const bottomYpet = creature.y + creature.hoWide
@@ -268,8 +270,23 @@ function startGame(){
     })
 
     petPress.addEventListener('click', gamerOption)
-    reloadButton.addEventListener('click', reloadAgain)     
+    reloadButton.addEventListener('click', reloadAgain)  
+    
+    gameLogin()
 }
+function gameLogin() {
+    fetch("http://localhost:8080/login")
+        .then(function (res) {
+            console.log(res)
+                if (res.ok) {
+                    res.text()
+                        .then(function (respuesta){
+                        console.log(respuesta)
+                        memberId = respuesta
+                    })
+                }
+            })
+}    
 
 //detenerMovimiento
 function stop() {
@@ -334,6 +351,19 @@ function paintAnimal() {
         reviewOverlap(obstacle)
     }
 }
+//enviarPosicion
+function sendLocation ( x, y) {
+    fetch(`http://localhost:8080/mokepon/${memberId}/locate`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            x,
+            y
+        })
+    })
+}
 // seleccionarMascotaJugador
 function gamerOption() {
     hidePet.style.display = 'none'
@@ -353,9 +383,22 @@ function gamerOption() {
    }  
    bringAtacks(petPlayer)
    boxLocate.style.display = 'flex'
+   //seleccionarMokepon
+   creatureSelect(petPlayer)
    //intervalo
   initiateZone()
    enemyPet()
+}
+function creatureSelect(petPlayer) {
+    fetch(`http://localhost:8080/mokepon/${memberId}`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            mokepon: petPlayer
+        })
+    })
 }
 // extraerAtaques
 function bringAtacks(petPlayer){
